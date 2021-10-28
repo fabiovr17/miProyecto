@@ -40,9 +40,13 @@
         "esri/map",
         "esri/dijit/BasemapToggle",
         "esri/dijit/HomeButton",
+        "esri/dijit/Scalebar",
+        "dojo/parser",
+        "dijit/layout/BorderContainer",
+        "dijit/layout/ContentPane",
         "dojo/domReady!",
-      ], function (Map, BasemapToggle, HomeButton) {
-        console.log(Map, BasemapToggle, HomeButton);
+      ], function (Map, BasemapToggle, HomeButton, Scalebar, parser) {
+        console.log(Map, BasemapToggle, HomeButton, Scalebar, parser);
 
         map = new Map("mapa", {
           basemap: "hybrid",
@@ -60,16 +64,35 @@
 
         var home = new HomeButton({
         map: map
-      }, "HomeButton");
-      home.startup();
-
+        },"HomeButton");
+        home.startup();
+        
+          var scalebar = new Scalebar({
+          map: map,
+          // "dual" displays both miles and kilometers
+          // "english" is the default, which displays miles
+          // use "metric" for kilometers
+          // use "dual" se visualiza en metros y pies
+          scalebarUnit: "metric"
+        });
+        parser.parse();
       });
     </script>
   </head>
   <body class="claro">
-    <div id="mapa">
+    <div data-dojo-type="dijit/layout/BorderContainer"
+    data-dojo-props="design:'headline', gutters:false"
+    style="width: 100%; height: 100%; margin: 0;">
+
+    <div id="mapa"
+    data-dojo-type="dijit/layout/ContentPane"
+      data-dojo-props="region:'center'"
+      style="overflow:hidden;">
+
     <div id="BasemapToggle"></div>
     <div id="HomeButton"></div>
+
+ </div>
   </div>
   </body>
 </html>
