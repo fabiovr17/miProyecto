@@ -26,6 +26,12 @@
         right: 20px;
         z-index: 50;
       }
+      #HomeButton {
+      position: absolute;
+      top: 95px;
+      left: 20px;
+      z-index: 50;
+    }
     </style>
     <script src="https://js.arcgis.com/3.38/"></script>
     <script type="text/javascript">
@@ -33,30 +39,37 @@
       require([
         "esri/map",
         "esri/dijit/BasemapToggle",
+        "esri/dijit/HomeButton",
         "dojo/domReady!",
-      ], function (Map, BasemapToggle) {
-        console.log(Map, BasemapToggle);
+      ], function (Map, BasemapToggle, HomeButton) {
+        console.log(Map, BasemapToggle, HomeButton);
 
         map = new Map("mapa", {
           basemap: "hybrid",
           center: [-75.533908, 6.345994],
           zoom: 15,
         });
-
         var toggle = new BasemapToggle(
           {
             map: map,
-            basemap: "satellite",
+            basemap: "topo-vector",
           },
           "BasemapToggle"
         );
         toggle.startup();
+
+        var home = new HomeButton({
+        map: map
+      }, "HomeButton");
+      home.startup();
+
       });
     </script>
   </head>
   <body class="claro">
     <div id="mapa">
     <div id="BasemapToggle"></div>
+    <div id="HomeButton"></div>
   </div>
   </body>
 </html>
