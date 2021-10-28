@@ -1,0 +1,40 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Mi primer Mapa</title>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/3.38/esri/css/esri.css">
+  <script src="https://js.arcgis.com/3.38/"></script>
+
+  <style>
+    html,
+    body,
+    #mapa {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+
+  <script type="text/javascript">
+    var map;
+    require(["esri/map"], function (Map) {
+      console.log(Map);
+
+      map = new Map("mapa", {
+        basemap: "hybrid",
+        center: [-75.533908, 6.345994],
+        zoom: 15
+      }
+    )
+  });
+  </script>
+
+</head>
+
+<body class="claro">
+  <div id="mapa"></div>
+</body>
+</html>
