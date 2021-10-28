@@ -1,40 +1,62 @@
 <html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>Mi primer Mapa</title>
 
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Mi primer Mapa</title>
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/3.38/esri/css/esri.css"
+    />
 
-  <link rel="stylesheet" href="https://js.arcgis.com/3.38/esri/css/esri.css">
-  <script src="https://js.arcgis.com/3.38/"></script>
-
-  <style>
-    html,
-    body,
-    #mapa {
-      height: 100%;
-      padding: 0;
-      margin: 0;
-    }
-  </style>
-
-  <script type="text/javascript">
-    var map;
-    require(["esri/map"], function (Map) {
-      console.log(Map);
-
-      map = new Map("mapa", {
-        basemap: "hybrid",
-        center: [-75.533908, 6.345994],
-        zoom: 15
+    <style>
+      html,
+      body,
+      #mapa {
+        height: 100%;
+        padding: 0;
+        margin: 0;
       }
-    )
-  });
-  </script>
+      #BasemapToggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 50;
+      }
+    </style>
+    <script src="https://js.arcgis.com/3.38/"></script>
+    <script type="text/javascript">
+      var map;
+      require([
+        "esri/map",
+        "esri/dijit/BasemapToggle",
+        "dojo/domReady!",
+      ], function (Map, BasemapToggle) {
+        console.log(Map, BasemapToggle);
 
-</head>
+        map = new Map("mapa", {
+          basemap: "hybrid",
+          center: [-75.533908, 6.345994],
+          zoom: 15,
+        });
 
-<body class="claro">
-  <div id="mapa"></div>
-</body>
+        var toggle = new BasemapToggle(
+          {
+            map: map,
+            basemap: "satellite",
+          },
+          "BasemapToggle"
+        );
+        toggle.startup();
+      });
+    </script>
+  </head>
+  <body class="claro">
+    <div id="mapa">
+    <div id="BasemapToggle"></div>
+  </div>
+  </body>
 </html>
