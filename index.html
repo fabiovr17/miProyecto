@@ -11,6 +11,14 @@
       rel="stylesheet"
       href="https://js.arcgis.com/3.38/esri/css/esri.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/3.38/dijit/themes/claro/claro.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/3.38/esri/css/esri.css"
+    />
 
     <style>
       html,
@@ -27,27 +35,38 @@
         z-index: 50;
       }
       #HomeButton {
-      position: absolute;
-      top: 95px;
-      left: 20px;
-      z-index: 50;
-    }
+        position: absolute;
+        top: 95px;
+        left: 20px;
+        z-index: 50;
+      }
     </style>
+
     <script src="https://js.arcgis.com/3.38/"></script>
     <script type="text/javascript">
       var map;
       require([
         "esri/map",
         "esri/dijit/BasemapToggle",
+        "esri/dijit/BasemapGallery",
+        "esri/arcgis/utils",
         "esri/dijit/HomeButton",
         "esri/dijit/Scalebar",
         "dojo/parser",
+
         "dijit/layout/BorderContainer",
         "dijit/layout/ContentPane",
+        "dijit/TitlePane",
         "dojo/domReady!",
-      ], function (Map, BasemapToggle, HomeButton, Scalebar, parser) {
-        console.log(Map, BasemapToggle, HomeButton, Scalebar, parser);
-
+      ], function (
+        Map,
+        BasemapToggle,
+        BasemapGallery,
+        arcgisUtils,
+        HomeButton,
+        Scalebar,
+        parser
+      ) {
         map = new Map("mapa", {
           basemap: "hybrid",
           center: [-75.533908, 6.345994],
@@ -62,37 +81,72 @@
         );
         toggle.startup();
 
-        var home = new HomeButton({
-        map: map
-        },"HomeButton");
+        var home = new HomeButton(
+          {
+            map: map,
+          },
+          "HomeButton"
+        );
         home.startup();
-        
-          var scalebar = new Scalebar({
+
+        var scalebar = new Scalebar({
           map: map,
           // "dual" displays both miles and kilometers
           // "english" is the default, which displays miles
           // use "metric" for kilometers
           // use "dual" se visualiza en metros y pies
-          scalebarUnit: "metric"
+          scalebarUnit: "metric",
         });
+
+        //add the basemap gallery, in this case we'll display maps from ArcGIS.com including bing maps
+        var basemapGallery = new BasemapGallery(
+          {
+            showArcGISBasemaps: true,
+            map: map,
+          },
+          "basemapGallery"
+        );
+        basemapGallery.startup();
+
+        basemapGallery.on("error", function (msg) {
+          console.log("basemap gallery error:  ", msg);
+        });
+
         parser.parse();
       });
     </script>
   </head>
+
   <body class="claro">
-    <div data-dojo-type="dijit/layout/BorderContainer"
-    data-dojo-props="design:'headline', gutters:false"
-    style="width: 100%; height: 100%; margin: 0;">
+    <div
+      data-dojo-type="dijit/layout/BorderContainer"
+      data-dojo-props="design:'headline', gutters:false"
+      style="width: 100%; height: 100%; margin: 0"
+    >
+      <div
+        id="mapa"
+        data-dojo-type="dijit/layout/ContentPane"
+        data-dojo-props="region:'center'"
+        style="overflow: hidden"
+        style="padding: 0"
+      >
+        <div style="position: absolute; right: 20px; top: 100px; z-index: 999">
+          <div
+            data-dojo-type="dijit/TitlePane"
+            data-dojo-props="title:'Mapa Base', open:false"
+          >
+            <div
+              data-dojo-type="dijit/layout/ContentPane"
+              style="width: 380px; height: 280px; overflow: auto"
+            >
+              <div id="basemapGallery"></div>
+            </div>
+          </div>
+        </div>
 
-    <div id="mapa"
-    data-dojo-type="dijit/layout/ContentPane"
-      data-dojo-props="region:'center'"
-      style="overflow:hidden;">
-
-    <div id="BasemapToggle"></div>
-    <div id="HomeButton"></div>
-
- </div>
-  </div>
+        <div id="BasemapToggle"></div>
+        <div id="HomeButton"></div>
+      </div>
+    </div>
   </body>
 </html>
